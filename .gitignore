@@ -26,6 +26,7 @@ nbdist/
 Thumbs.db
 
 dados-jackut.ser
+tests-gerados/
 
 *.log
 *.tmp
