@@ -12,10 +12,22 @@ import java.util.Map;
 import br.ufal.ic.p2.jackut.contratos.Persistidor;
 import br.ufal.ic.p2.jackut.modelos.Usuario;
 
+/**
+ * Serviço responsável pela persistência dos dados do Jackut em arquivo.
+ *
+ * <p>A classe implementa o contrato {@link Persistidor}, permitindo salvar,
+ * carregar e limpar os usuários cadastrados no sistema.</p>
+ */
 public class ServicoPersistencia implements Persistidor {
 
     private static final String NOME_ARQUIVO = "dados-jackut.ser";
 
+    /**
+     * Salva o mapa de usuários em arquivo.
+     *
+     * @param usuarios mapa de usuários indexados pelo login.
+     * @throws RuntimeException se ocorrer erro durante a gravação do arquivo.
+     */
     public void salvar(Map<String, Usuario> usuarios) {
         ObjectOutputStream saida = null;
 
@@ -35,6 +47,12 @@ public class ServicoPersistencia implements Persistidor {
         }
     }
 
+    /**
+     * Carrega o mapa de usuários salvo anteriormente.
+     *
+     * @return mapa de usuários carregado ou mapa vazio caso não exista arquivo válido.
+     * @throws RuntimeException se ocorrer erro ao fechar o arquivo de dados.
+     */
     public Map<String, Usuario> carregar() {
         File arquivo = new File(NOME_ARQUIVO);
 
@@ -63,6 +81,9 @@ public class ServicoPersistencia implements Persistidor {
         }
     }
 
+    /**
+     * Remove o arquivo de dados persistidos.
+     */
     public void limpar() {
         File arquivo = new File(NOME_ARQUIVO);
 
@@ -71,6 +92,12 @@ public class ServicoPersistencia implements Persistidor {
         }
     }
 
+    /**
+     * Converte um objeto carregado do arquivo para um mapa de usuários válido.
+     *
+     * @param objeto objeto carregado do arquivo.
+     * @return mapa de usuários extraído do objeto.
+     */
     private Map<String, Usuario> converterParaMapa(Object objeto) {
         Map<String, Usuario> usuarios = new LinkedHashMap<String, Usuario>();
 
