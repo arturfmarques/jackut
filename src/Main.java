@@ -1,14 +1,6 @@
 import easyaccept.EasyAccept;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.nio.charset.Charset;
 
 /**
  * Classe principal responsável por executar os testes de aceitação do projeto Jackut.
@@ -16,15 +8,12 @@ import java.nio.charset.Charset;
  * <p>A classe utiliza a biblioteca EasyAccept para executar os arquivos de teste
  * disponibilizados para o Milestone 01.</p>
  *
- * <p>Os arquivos de teste originais usam codificação ISO-8859-1. Para evitar
- * problemas de acentuação em máquinas configuradas com UTF-8, esta classe gera
- * cópias temporárias dos testes usando a codificação padrão do ambiente antes
- * de executá-los.</p>
+ * <p>A localização da pasta de testes é feita de forma flexível para evitar
+ * falhas quando o projeto é executado a partir de diretórios diferentes.</p>
  */
 public class Main {
 
-    private static final String CODIFICACAO_TESTES_ORIGINAIS = "ISO-8859-1";
-    private static final String DIRETORIO_TESTES_GERADOS = "tests-gerados";
+    private static final String FACADE = "br.ufal.ic.p2.jackut.Facade";
 
     /**
      * Método principal da aplicação.
@@ -32,119 +21,90 @@ public class Main {
      * @param args argumentos de linha de comando não utilizados diretamente.
      */
     public static void main(String[] args) {
-        executarTeste("tests/us1_1.txt");
-        executarTeste("tests/us1_2.txt");
+        String baseTestes = localizarPastaTestes();
 
-        executarTeste("tests/us2_1.txt");
-        executarTeste("tests/us2_2.txt");
+        executarTeste(baseTestes + "us1_1.txt");
+        executarTeste(baseTestes + "us1_2.txt");
 
-        executarTeste("tests/us3_1.txt");
-        executarTeste("tests/us3_2.txt");
+        executarTeste(baseTestes + "us2_1.txt");
+        executarTeste(baseTestes + "us2_2.txt");
 
-        executarTeste("tests/us4_1.txt");
-        executarTeste("tests/us4_2.txt");
+        executarTeste(baseTestes + "us3_1.txt");
+        executarTeste(baseTestes + "us3_2.txt");
+
+        executarTeste(baseTestes + "us4_1.txt");
+        executarTeste(baseTestes + "us4_2.txt");
     }
 
     /**
      * Executa um arquivo de teste de aceitação usando a fachada do sistema.
      *
-     * @param caminhoTeste caminho relativo do arquivo de teste original.
+     * @param caminhoTeste caminho relativo do arquivo de teste.
      */
     private static void executarTeste(String caminhoTeste) {
-        String caminhoTestePreparado = prepararTesteParaExecucao(caminhoTeste);
-
         String[] argumentos = {
-                "br.ufal.ic.p2.jackut.Facade",
-                caminhoTestePreparado
+                FACADE,
+                caminhoTeste
         };
 
         EasyAccept.main(argumentos);
     }
 
     /**
-     * Prepara uma cópia do arquivo de teste na codificação padrão do ambiente.
+     * Localiza a pasta dos testes a partir do diretório de execução.
      *
-     * @param caminhoTeste caminho relativo do arquivo de teste original.
-     * @return caminho relativo do arquivo de teste preparado.
+     * @return caminho da pasta que contém os testes.
      */
-    private static String prepararTesteParaExecucao(String caminhoTeste) {
-        File diretorio = new File(DIRETORIO_TESTES_GERADOS);
+    private static String localizarPastaTestes() {
+        File pastaTestes = procurarPastaTestes(new File("."), 0);
 
-        if (!diretorio.exists() && !diretorio.mkdirs()) {
-            throw new RuntimeException("Não foi possível criar o diretório de testes gerados.");
+        if (pastaTestes == null) {
+            throw new IllegalStateException(
+                    "Nao foi possivel localizar a pasta de testes. Diretorio atual: "
+                            + new File(".").getAbsolutePath()
+            );
         }
 
-        File arquivoOriginal = new File(caminhoTeste);
-        File arquivoGerado = new File(diretorio, arquivoOriginal.getName());
-
-        copiarArquivoComCodificacao(arquivoOriginal, arquivoGerado);
-
-        return arquivoGerado.getPath();
+        return pastaTestes.getPath() + File.separator;
     }
 
     /**
-     * Copia um arquivo de teste ISO-8859-1 para a codificação padrão do ambiente.
+     * Procura recursivamente a pasta que contém o arquivo us1_1.txt.
      *
-     * @param origem arquivo de teste original.
-     * @param destino arquivo de teste preparado.
+     * @param diretorio diretório inicial da busca.
+     * @param profundidade profundidade atual da busca.
+     * @return pasta dos testes, se encontrada.
      */
-    private static void copiarArquivoComCodificacao(File origem, File destino) {
-        BufferedReader leitor = null;
-        BufferedWriter escritor = null;
-
-        try {
-            leitor = new BufferedReader(new InputStreamReader(
-                    new FileInputStream(origem),
-                    CODIFICACAO_TESTES_ORIGINAIS
-            ));
-
-            escritor = new BufferedWriter(new OutputStreamWriter(
-                    new FileOutputStream(destino),
-                    Charset.defaultCharset().name()
-            ));
-
-            String linha = leitor.readLine();
-
-            while (linha != null) {
-                escritor.write(linha);
-                escritor.newLine();
-                linha = leitor.readLine();
-            }
-        } catch (IOException erro) {
-            throw new RuntimeException("Erro ao preparar arquivo de teste.", erro);
-        } finally {
-            fecharLeitor(leitor);
-            fecharEscritor(escritor);
+    private static File procurarPastaTestes(File diretorio, int profundidade) {
+        if (diretorio == null || !diretorio.isDirectory() || profundidade > 4) {
+            return null;
         }
-    }
 
-    /**
-     * Fecha o leitor utilizado na preparação dos testes.
-     *
-     * @param leitor leitor a ser fechado.
-     */
-    private static void fecharLeitor(BufferedReader leitor) {
-        if (leitor != null) {
-            try {
-                leitor.close();
-            } catch (IOException erro) {
-                throw new RuntimeException("Erro ao fechar o arquivo de teste original.", erro);
+        File pastaTests = new File(diretorio, "tests");
+        File arquivoTeste = new File(pastaTests, "us1_1.txt");
+
+        if (arquivoTeste.exists()) {
+            return pastaTests;
+        }
+
+        File[] arquivos = diretorio.listFiles();
+
+        if (arquivos == null) {
+            return null;
+        }
+
+        for (int i = 0; i < arquivos.length; i++) {
+            File arquivo = arquivos[i];
+
+            if (arquivo.isDirectory()) {
+                File resultado = procurarPastaTestes(arquivo, profundidade + 1);
+
+                if (resultado != null) {
+                    return resultado;
+                }
             }
         }
-    }
 
-    /**
-     * Fecha o escritor utilizado na preparação dos testes.
-     *
-     * @param escritor escritor a ser fechado.
-     */
-    private static void fecharEscritor(BufferedWriter escritor) {
-        if (escritor != null) {
-            try {
-                escritor.close();
-            } catch (IOException erro) {
-                throw new RuntimeException("Erro ao fechar o arquivo de teste gerado.", erro);
-            }
-        }
+        return null;
     }
 }

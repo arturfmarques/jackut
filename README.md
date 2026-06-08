@@ -108,14 +108,13 @@ Os testes foram executados com sucesso, totalizando **184 testes OK**.
 1. Abra o projeto no IntelliJ IDEA
 2. Certifique-se de que a pasta `src` está marcada como **Sources Root**
 3. Verifique se o arquivo `easyaccept.jar` está corretamente adicionado ao projeto
-4. Configure a execução com a codificação `ISO-8859-1`
-5. Execute a classe `Main.java` para rodar os testes de aceitação
+4. Execute a classe `Main.java` para rodar os testes de aceitação
 
-VM options recomendadas:
+A classe `Main.java` localiza automaticamente a pasta `tests`, evitando problemas quando o projeto é baixado ou executado a partir de diretórios diferentes.
 
-```txt
--Dfile.encoding=ISO-8859-1 -Dsun.stdout.encoding=ISO-8859-1 -Dsun.stderr.encoding=ISO-8859-1
-```
+As mensagens de erro do sistema foram adaptadas para manter compatibilidade com os testes do EasyAccept em ambientes com codificação `UTF-8` ou `ISO-8859-1`.
+
+Caso os testes sejam executados diretamente pelo EasyAccept, sem passar pela classe `Main.java`, recomenda-se utilizar a codificação `ISO-8859-1`, pois os arquivos de teste originais utilizam essa codificação.
 
 ## Relatório
 
