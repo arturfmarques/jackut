@@ -120,7 +120,7 @@ Caso os testes sejam executados diretamente pelo EasyAccept, sem passar pela cla
 
 O relatório do projeto está disponível na pasta:
 
-* [`relatorio/Documentação Jackut.pdf`](relatorio/Documenta%C3%A7%C3%A3o%20Jackut.pdf)
+* [`relatorio/relatorio-milestone1.pdf`](relatorio/relatorio-milestone1.pdf)
 
 O relatório apresenta a descrição do design arquitetural, os principais componentes do sistema, as interações entre as classes, os conceitos de Programação Orientada a Objetos aplicados, o padrão de projeto utilizado, a persistência de dados, a compatibilidade de execução e os testes executados.
 
