@@ -11,9 +11,9 @@ import br.ufal.ic.p2.jackut.modelos.Sessao;
 import br.ufal.ic.p2.jackut.modelos.Usuario;
 
 /**
- * Classe central da lógica de negócio do sistema Jackut.
+ * Classe central da logica de negocio do sistema Jackut.
  *
- * <p>Concentra as operações relativas a usuários, sessões, perfis,
+ * <p>Concentra as operacoes relativas a usuarios, sessoes, perfis,
  * amizades e recados do Milestone 01.</p>
  */
 public class SistemaJackut {
@@ -44,13 +44,13 @@ public class SistemaJackut {
     }
 
     /**
-     * Cria uma nova conta de usuário.
+     * Cria uma nova conta de usuario.
      *
-     * @param login login único do usuário.
-     * @param senha senha de acesso do usuário.
-     * @param nome nome público do usuário.
-     * @throws JackutException se o login for inválido, a senha for inválida
-     * ou já existir conta com o mesmo login.
+     * @param login login unico do usuario.
+     * @param senha senha de acesso do usuario.
+     * @param nome nome publico do usuario.
+     * @throws JackutException se o login for invalido, a senha for invalida
+     * ou ja existir conta com o mesmo login.
      */
     public void criarUsuario(String login, String senha, String nome) {
         validarLoginParaCadastro(login);
@@ -64,12 +64,12 @@ public class SistemaJackut {
     }
 
     /**
-     * Abre uma sessão para um usuário cadastrado.
+     * Abre uma sessao para um usuario cadastrado.
      *
-     * @param login login do usuário.
-     * @param senha senha do usuário.
-     * @return identificador da sessão aberta.
-     * @throws JackutException se o login ou a senha forem inválidos.
+     * @param login login do usuario.
+     * @param senha senha do usuario.
+     * @return identificador da sessao aberta.
+     * @throws JackutException se o login ou a senha forem invalidos.
      */
     public String abrirSessao(String login, String senha) {
         Usuario usuario = usuarios.get(login);
@@ -85,13 +85,13 @@ public class SistemaJackut {
     }
 
     /**
-     * Retorna um atributo do perfil de um usuário.
+     * Retorna um atributo do perfil de um usuario.
      *
-     * @param login login do usuário.
+     * @param login login do usuario.
      * @param atributo nome do atributo consultado.
      * @return valor do atributo.
-     * @throws JackutException se o usuário não estiver cadastrado ou o atributo
-     * não estiver preenchido.
+     * @throws JackutException se o usuario nao estiver cadastrado ou o atributo
+     * nao estiver preenchido.
      */
     public String getAtributoUsuario(String login, String atributo) {
         Usuario usuario = buscarUsuario(login);
@@ -104,12 +104,12 @@ public class SistemaJackut {
     }
 
     /**
-     * Edita o perfil do usuário associado à sessão informada.
+     * Edita o perfil do usuario associado a sessao informada.
      *
-     * @param id identificador da sessão.
+     * @param id identificador da sessao.
      * @param atributo atributo a ser criado ou alterado.
      * @param valor valor do atributo.
-     * @throws JackutException se a sessão não estiver associada a um usuário válido.
+     * @throws JackutException se a sessao nao estiver associada a um usuario valido.
      */
     public void editarPerfil(String id, String atributo, String valor) {
         Usuario usuario = buscarUsuarioDaSessao(id);
@@ -117,12 +117,12 @@ public class SistemaJackut {
     }
 
     /**
-     * Adiciona um usuário como amigo ou aceita um convite de amizade existente.
+     * Adiciona um usuario como amigo ou aceita um convite de amizade existente.
      *
-     * @param id identificador da sessão do usuário solicitante.
-     * @param amigo login do usuário a ser adicionado.
-     * @throws JackutException se o usuário não existir, se a amizade já estiver
-     * efetivada, se já existir convite pendente ou se o usuário tentar adicionar a si mesmo.
+     * @param id identificador da sessao do usuario solicitante.
+     * @param amigo login do usuario a ser adicionado.
+     * @throws JackutException se o usuario nao existir, se a amizade ja estiver
+     * efetivada, se ja existir convite pendente ou se o usuario tentar adicionar a si mesmo.
      */
     public void adicionarAmigo(String id, String amigo) {
         Usuario usuario = buscarUsuarioDaSessao(id);
@@ -151,12 +151,12 @@ public class SistemaJackut {
     }
 
     /**
-     * Verifica se dois usuários são amigos.
+     * Verifica se dois usuarios sao amigos.
      *
-     * @param login login do primeiro usuário.
-     * @param amigo login do segundo usuário.
-     * @return {@code true} se os usuários forem amigos; {@code false} caso contrário.
-     * @throws JackutException se algum dos usuários não estiver cadastrado.
+     * @param login login do primeiro usuario.
+     * @param amigo login do segundo usuario.
+     * @return {@code true} se os usuarios forem amigos; {@code false} caso contrario.
+     * @throws JackutException se algum dos usuarios nao estiver cadastrado.
      */
     public boolean ehAmigo(String login, String amigo) {
         Usuario usuario = buscarUsuario(login);
@@ -165,11 +165,11 @@ public class SistemaJackut {
     }
 
     /**
-     * Retorna a lista de amigos de um usuário no formato esperado pelos testes.
+     * Retorna a lista de amigos de um usuario no formato esperado pelos testes.
      *
-     * @param login login do usuário.
+     * @param login login do usuario.
      * @return lista de amigos em formato textual.
-     * @throws JackutException se o usuário não estiver cadastrado.
+     * @throws JackutException se o usuario nao estiver cadastrado.
      */
     public String getAmigos(String login) {
         Usuario usuario = buscarUsuario(login);
@@ -177,13 +177,13 @@ public class SistemaJackut {
     }
 
     /**
-     * Envia um recado para outro usuário cadastrado.
+     * Envia um recado para outro usuario cadastrado.
      *
-     * @param id identificador da sessão do remetente.
-     * @param destinatario login do destinatário.
+     * @param id identificador da sessao do remetente.
+     * @param destinatario login do destinatario.
      * @param recado texto do recado.
-     * @throws JackutException se a sessão for inválida, se o destinatário não existir
-     * ou se o usuário tentar enviar recado para si mesmo.
+     * @throws JackutException se a sessao for invalida, se o destinatario nao existir
+     * ou se o usuario tentar enviar recado para si mesmo.
      */
     public void enviarRecado(String id, String destinatario, String recado) {
         Usuario remetente = buscarUsuarioDaSessao(id);
@@ -197,11 +197,11 @@ public class SistemaJackut {
     }
 
     /**
-     * Lê o primeiro recado pendente do usuário associado à sessão.
+     * Le o primeiro recado pendente do usuario associado a sessao.
      *
-     * @param id identificador da sessão.
+     * @param id identificador da sessao.
      * @return texto do primeiro recado pendente.
-     * @throws JackutException se a sessão for inválida ou se não houver recados.
+     * @throws JackutException se a sessao for invalida ou se nao houver recados.
      */
     public String lerRecado(String id) {
         Usuario usuario = buscarUsuarioDaSessao(id);
@@ -245,11 +245,11 @@ public class SistemaJackut {
     }
 
     /**
-     * Busca um usuário cadastrado pelo login.
+     * Busca um usuario cadastrado pelo login.
      *
-     * @param login login do usuário.
-     * @return usuário encontrado.
-     * @throws JackutException se o usuário não estiver cadastrado.
+     * @param login login do usuario.
+     * @return usuario encontrado.
+     * @throws JackutException se o usuario nao estiver cadastrado.
      */
     private Usuario buscarUsuario(String login) {
         Usuario usuario = usuarios.get(login);
@@ -262,12 +262,12 @@ public class SistemaJackut {
     }
 
     /**
-     * Busca o usuário associado a uma sessão.
+     * Busca o usuario associado a uma sessao.
      *
-     * @param id identificador da sessão.
-     * @return usuário associado à sessão.
-     * @throws JackutException se a sessão não existir ou não estiver associada
-     * a um usuário cadastrado.
+     * @param id identificador da sessao.
+     * @return usuario associado a sessao.
+     * @throws JackutException se a sessao nao existir ou nao estiver associada
+     * a um usuario cadastrado.
      */
     private Usuario buscarUsuarioDaSessao(String id) {
         Sessao sessao = sessoes.get(id);
@@ -280,10 +280,10 @@ public class SistemaJackut {
     }
 
     /**
-     * Formata uma lista de strings no padrão esperado pelos testes.
+     * Formata uma lista de strings no padrao esperado pelos testes.
      *
      * @param itens itens a serem formatados.
-     * @return representação textual da lista.
+     * @return representacao textual da lista.
      */
     private String formatarLista(List<String> itens) {
         StringBuilder resultado = new StringBuilder();

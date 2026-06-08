@@ -1,11 +1,11 @@
 package br.ufal.ic.p2.jackut.modelos;
 
 /**
- * Representa uma sessão aberta por um usuário autenticado.
+ * Representa uma sessao aberta por um usuario autenticado.
  *
- * <p>A sessão armazena um identificador e o login do usuário autenticado,
- * permitindo que operações privadas sejam realizadas apenas por usuários
- * com sessão aberta.</p>
+ * <p>A sessao armazena um identificador e o login do usuario autenticado,
+ * permitindo que operacoes privadas sejam realizadas apenas por usuarios
+ * com sessao aberta.</p>
  */
 public class Sessao extends Entidade {
 
@@ -14,10 +14,10 @@ public class Sessao extends Entidade {
     private String loginUsuario;
 
     /**
-     * Cria uma nova sessão.
+     * Cria uma nova sessao.
      *
-     * @param id identificador da sessão.
-     * @param loginUsuario login do usuário associado à sessão.
+     * @param id identificador da sessao.
+     * @param loginUsuario login do usuario associado a sessao.
      */
     public Sessao(String id, String loginUsuario) {
         super(id);
@@ -25,9 +25,9 @@ public class Sessao extends Entidade {
     }
 
     /**
-     * Retorna o login do usuário associado à sessão.
+     * Retorna o login do usuario associado a sessao.
      *
-     * @return login do usuário da sessão.
+     * @return login do usuario da sessao.
      */
     public String getLoginUsuario() {
         return loginUsuario;

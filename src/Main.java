@@ -3,22 +3,22 @@ import easyaccept.EasyAccept;
 import java.io.File;
 
 /**
- * Classe principal responsável por executar os testes de aceitação do projeto Jackut.
+ * Classe principal responsavel por executar os testes de aceitacao do projeto Jackut.
  *
  * <p>A classe utiliza a biblioteca EasyAccept para executar os arquivos de teste
  * disponibilizados para o Milestone 01.</p>
  *
- * <p>A localização da pasta de testes é feita de forma flexível para evitar
- * falhas quando o projeto é executado a partir de diretórios diferentes.</p>
+ * <p>A localizacao da pasta de testes e feita de forma flexivel para evitar
+ * falhas quando o projeto e executado a partir de diretorios diferentes.</p>
  */
 public class Main {
 
     private static final String FACADE = "br.ufal.ic.p2.jackut.Facade";
 
     /**
-     * Método principal da aplicação.
+     * Metodo principal da aplicacao.
      *
-     * @param args argumentos de linha de comando não utilizados diretamente.
+     * @param args argumentos de linha de comando nao utilizados diretamente.
      */
     public static void main(String[] args) {
         String baseTestes = localizarPastaTestes();
@@ -37,7 +37,7 @@ public class Main {
     }
 
     /**
-     * Executa um arquivo de teste de aceitação usando a fachada do sistema.
+     * Executa um arquivo de teste de aceitacao usando a fachada do sistema.
      *
      * @param caminhoTeste caminho relativo do arquivo de teste.
      */
@@ -51,9 +51,9 @@ public class Main {
     }
 
     /**
-     * Localiza a pasta dos testes a partir do diretório de execução.
+     * Localiza a pasta dos testes a partir do diretorio de execucao.
      *
-     * @return caminho da pasta que contém os testes.
+     * @return caminho da pasta que contem os testes.
      */
     private static String localizarPastaTestes() {
         File pastaTestes = procurarPastaTestes(new File("."), 0);
@@ -69,9 +69,9 @@ public class Main {
     }
 
     /**
-     * Procura recursivamente a pasta que contém o arquivo us1_1.txt.
+     * Procura recursivamente a pasta que contem o arquivo us1_1.txt.
      *
-     * @param diretorio diretório inicial da busca.
+     * @param diretorio diretorio inicial da busca.
      * @param profundidade profundidade atual da busca.
      * @return pasta dos testes, se encontrada.
      */

@@ -3,7 +3,7 @@ package br.ufal.ic.p2.jackut.modelos;
 import java.io.Serializable;
 
 /**
- * Classe abstrata base para entidades identificáveis do sistema.
+ * Classe abstrata base para entidades identificaveis do sistema.
  *
  * <p>Foi criada para representar o conceito comum de entidades que possuem
  * um identificador no projeto Jackut.</p>

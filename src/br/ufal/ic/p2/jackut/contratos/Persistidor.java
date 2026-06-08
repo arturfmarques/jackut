@@ -5,24 +5,24 @@ import java.util.Map;
 import br.ufal.ic.p2.jackut.modelos.Usuario;
 
 /**
- * Interface responsável por definir o contrato de persistência dos dados do sistema.
+ * Interface responsavel por definir o contrato de persistencia dos dados do sistema.
  *
- * <p>Ela permite que a lógica de negócio dependa de uma abstração, e não
- * diretamente de uma implementação concreta de persistência.</p>
+ * <p>Ela permite que a logica de negocio dependa de uma abstracao, e nao
+ * diretamente de uma implementacao concreta de persistencia.</p>
  */
 public interface Persistidor {
 
     /**
-     * Salva o mapa de usuários do sistema.
+     * Salva o mapa de usuarios do sistema.
      *
-     * @param usuarios mapa de usuários indexados pelo login.
+     * @param usuarios mapa de usuarios indexados pelo login.
      */
     void salvar(Map<String, Usuario> usuarios);
 
     /**
-     * Carrega o mapa de usuários salvo anteriormente.
+     * Carrega o mapa de usuarios salvo anteriormente.
      *
-     * @return mapa de usuários carregado.
+     * @return mapa de usuarios carregado.
      */
     Map<String, Usuario> carregar();
 

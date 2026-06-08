@@ -4,14 +4,14 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
 /**
- * Exceção personalizada do sistema Jackut.
+ * Excecao personalizada do sistema Jackut.
  *
- * <p>É utilizada para representar erros de regra de negócio identificados
- * durante a execução das funcionalidades do sistema.</p>
+ * <p>E utilizada para representar erros de regra de negocio identificados
+ * durante a execucao das funcionalidades do sistema.</p>
  *
- * <p>A mensagem é adaptada para a codificação padrão da JVM para manter
+ * <p>A mensagem e adaptada para a codificacao padrao da JVM para manter
  * compatibilidade com os scripts do EasyAccept, que podem ser lidos em
- * codificações diferentes dependendo do ambiente.</p>
+ * codificacoes diferentes dependendo do ambiente.</p>
  */
 public class JackutException extends RuntimeException {
 
@@ -19,7 +19,7 @@ public class JackutException extends RuntimeException {
     private static final String CODIFICACAO_TESTES = "ISO-8859-1";
 
     /**
-     * Cria uma exceção com a mensagem informada.
+     * Cria uma excecao com a mensagem informada.
      *
      * @param mensagem mensagem descritiva do erro.
      */
@@ -28,10 +28,10 @@ public class JackutException extends RuntimeException {
     }
 
     /**
-     * Ajusta a mensagem para a codificação padrão do ambiente de execução.
+     * Ajusta a mensagem para a codificacao padrao do ambiente de execucao.
      *
      * @param mensagem mensagem original do contrato dos testes.
-     * @return mensagem ajustada para comparação pelo EasyAccept.
+     * @return mensagem ajustada para comparacao pelo EasyAccept.
      */
     private static String ajustarMensagem(String mensagem) {
         if (mensagem == null) {

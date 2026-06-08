@@ -13,20 +13,20 @@ import br.ufal.ic.p2.jackut.contratos.Persistidor;
 import br.ufal.ic.p2.jackut.modelos.Usuario;
 
 /**
- * Serviço responsável pela persistência dos dados do Jackut em arquivo.
+ * Servico responsavel pela persistencia dos dados do Jackut em arquivo.
  *
  * <p>A classe implementa o contrato {@link Persistidor}, permitindo salvar,
- * carregar e limpar os usuários cadastrados no sistema.</p>
+ * carregar e limpar os usuarios cadastrados no sistema.</p>
  */
 public class ServicoPersistencia implements Persistidor {
 
     private static final String NOME_ARQUIVO = "dados-jackut.ser";
 
     /**
-     * Salva o mapa de usuários em arquivo.
+     * Salva o mapa de usuarios em arquivo.
      *
-     * @param usuarios mapa de usuários indexados pelo login.
-     * @throws RuntimeException se ocorrer erro durante a gravação do arquivo.
+     * @param usuarios mapa de usuarios indexados pelo login.
+     * @throws RuntimeException se ocorrer erro durante a gravacao do arquivo.
      */
     public void salvar(Map<String, Usuario> usuarios) {
         ObjectOutputStream saida = null;
@@ -48,9 +48,9 @@ public class ServicoPersistencia implements Persistidor {
     }
 
     /**
-     * Carrega o mapa de usuários salvo anteriormente.
+     * Carrega o mapa de usuarios salvo anteriormente.
      *
-     * @return mapa de usuários carregado ou mapa vazio caso não exista arquivo válido.
+     * @return mapa de usuarios carregado ou mapa vazio caso nao exista arquivo valido.
      * @throws RuntimeException se ocorrer erro ao fechar o arquivo de dados.
      */
     public Map<String, Usuario> carregar() {
@@ -93,10 +93,10 @@ public class ServicoPersistencia implements Persistidor {
     }
 
     /**
-     * Converte um objeto carregado do arquivo para um mapa de usuários válido.
+     * Converte um objeto carregado do arquivo para um mapa de usuarios valido.
      *
      * @param objeto objeto carregado do arquivo.
-     * @return mapa de usuários extraído do objeto.
+     * @return mapa de usuarios extraido do objeto.
      */
     private Map<String, Usuario> converterParaMapa(Object objeto) {
         Map<String, Usuario> usuarios = new LinkedHashMap<String, Usuario>();
