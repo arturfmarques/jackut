@@ -1,7 +1,6 @@
 /**
  * Pacote de excecoes do sistema Jackut.
  *
- * <p>Contem a excecao personalizada utilizada para representar violacoes
- * das regras de negocio do sistema.</p>
+ * <p>Contem a excecao base do dominio e excecoes especificas para regras de negocio.</p>
  */
 package br.ufal.ic.p2.jackut.excecoes;

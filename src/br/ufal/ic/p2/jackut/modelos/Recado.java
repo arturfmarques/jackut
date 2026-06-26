@@ -1,20 +1,11 @@
 package br.ufal.ic.p2.jackut.modelos;
 
-import java.io.Serializable;
-
 /**
  * Representa um recado enviado entre usuarios do Jackut.
- *
- * <p>O recado armazena o login do remetente e o texto enviado. A leitura
- * realizada pelos testes utiliza apenas o texto, mas manter o remetente
- * melhora a representacao do dominio.</p>
  */
-public class Recado implements Serializable {
+public class Recado extends Mensagem {
 
     private static final long serialVersionUID = 1L;
-
-    private String remetente;
-    private String texto;
 
     /**
      * Cria um novo recado.
@@ -23,25 +14,6 @@ public class Recado implements Serializable {
      * @param texto conteudo textual do recado.
      */
     public Recado(String remetente, String texto) {
-        this.remetente = remetente;
-        this.texto = texto;
-    }
-
-    /**
-     * Retorna o login do remetente.
-     *
-     * @return login do remetente.
-     */
-    public String getRemetente() {
-        return remetente;
-    }
-
-    /**
-     * Retorna o texto do recado.
-     *
-     * @return texto do recado.
-     */
-    public String getTexto() {
-        return texto;
+        super(remetente, texto);
     }
 }

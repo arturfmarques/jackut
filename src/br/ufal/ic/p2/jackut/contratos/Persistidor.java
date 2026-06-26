@@ -1,30 +1,25 @@
 package br.ufal.ic.p2.jackut.contratos;
 
-import java.util.Map;
-
-import br.ufal.ic.p2.jackut.modelos.Usuario;
+import br.ufal.ic.p2.jackut.dados.DadosJackut;
 
 /**
  * Interface responsavel por definir o contrato de persistencia dos dados do sistema.
- *
- * <p>Ela permite que a logica de negocio dependa de uma abstracao, e nao
- * diretamente de uma implementacao concreta de persistencia.</p>
  */
 public interface Persistidor {
 
     /**
-     * Salva o mapa de usuarios do sistema.
+     * Salva os dados do sistema.
      *
-     * @param usuarios mapa de usuarios indexados pelo login.
+     * @param dados dados que serao salvos.
      */
-    void salvar(Map<String, Usuario> usuarios);
+    void salvar(DadosJackut dados);
 
     /**
-     * Carrega o mapa de usuarios salvo anteriormente.
+     * Carrega os dados salvos anteriormente.
      *
-     * @return mapa de usuarios carregado.
+     * @return dados carregados.
      */
-    Map<String, Usuario> carregar();
+    DadosJackut carregar();
 
     /**
      * Remove os dados persistidos.
