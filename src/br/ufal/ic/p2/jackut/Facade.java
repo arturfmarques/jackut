@@ -1,31 +1,47 @@
 package br.ufal.ic.p2.jackut;
 
+import br.ufal.ic.p2.jackut.contratos.Persistidor;
+import br.ufal.ic.p2.jackut.dados.DadosJackut;
 import br.ufal.ic.p2.jackut.excecoes.JackutException;
-import br.ufal.ic.p2.jackut.servicos.SistemaJackut;
+import br.ufal.ic.p2.jackut.servicos.AmizadeService;
+import br.ufal.ic.p2.jackut.servicos.PerfilService;
+import br.ufal.ic.p2.jackut.servicos.RecadoService;
+import br.ufal.ic.p2.jackut.servicos.ServicoPersistencia;
+import br.ufal.ic.p2.jackut.servicos.SessaoService;
+import br.ufal.ic.p2.jackut.servicos.UsuarioService;
 
 /**
  * Fachada do sistema Jackut.
  *
  * <p>Esta classe representa o ponto de entrada utilizado pelos testes de aceitacao
- * do EasyAccept. Ela nao concentra as regras de negocio, apenas delega as operacoes
- * para a classe {@link SistemaJackut}.</p>
+ * do EasyAccept. Ela preserva o contrato publico esperado pelos testes e delega
+ * cada operacao para o servico responsavel.</p>
  */
 public class Facade {
 
-    private SistemaJackut sistema;
+    private DadosJackut dados;
+    private Persistidor persistidor;
+    private UsuarioService usuarioService;
+    private SessaoService sessaoService;
+    private PerfilService perfilService;
+    private AmizadeService amizadeService;
+    private RecadoService recadoService;
 
     /**
-     * Cria uma nova fachada e inicializa o sistema Jackut.
+     * Cria uma nova fachada e inicializa os servicos do sistema.
      */
     public Facade() {
-        this.sistema = new SistemaJackut();
+        this.persistidor = new ServicoPersistencia();
+        this.dados = persistidor.carregar();
+        inicializarServicos();
     }
 
     /**
      * Apaga todos os dados mantidos pelo sistema.
      */
     public void zerarSistema() {
-        sistema.zerarSistema();
+        dados.limpar();
+        persistidor.limpar();
     }
 
     /**
@@ -34,11 +50,10 @@ public class Facade {
      * @param login login unico do usuario.
      * @param senha senha de acesso do usuario.
      * @param nome nome publico do usuario.
-     * @throws JackutException se o login for invalido, a senha for invalida
-     * ou ja existir uma conta com o mesmo login.
+     * @throws JackutException se houver violacao de regra de cadastro.
      */
     public void criarUsuario(String login, String senha, String nome) {
-        sistema.criarUsuario(login, senha, nome);
+        usuarioService.criarUsuario(login, senha, nome);
     }
 
     /**
@@ -47,10 +62,10 @@ public class Facade {
      * @param login login do usuario.
      * @param senha senha do usuario.
      * @return identificador da sessao aberta.
-     * @throws JackutException se o login ou a senha forem invalidos.
+     * @throws JackutException se login ou senha forem invalidos.
      */
     public String abrirSessao(String login, String senha) {
-        return sistema.abrirSessao(login, senha);
+        return sessaoService.abrirSessao(login, senha);
     }
 
     /**
@@ -59,11 +74,10 @@ public class Facade {
      * @param login login do usuario.
      * @param atributo nome do atributo consultado.
      * @return valor do atributo informado.
-     * @throws JackutException se o usuario nao estiver cadastrado ou se o atributo
-     * nao estiver preenchido.
+     * @throws JackutException se houver violacao de regra de perfil.
      */
     public String getAtributoUsuario(String login, String atributo) {
-        return sistema.getAtributoUsuario(login, atributo);
+        return perfilService.getAtributoUsuario(login, atributo);
     }
 
     /**
@@ -75,7 +89,7 @@ public class Facade {
      * @throws JackutException se a sessao nao estiver associada a um usuario valido.
      */
     public void editarPerfil(String id, String atributo, String valor) {
-        sistema.editarPerfil(id, atributo, valor);
+        perfilService.editarPerfil(id, atributo, valor);
     }
 
     /**
@@ -83,11 +97,10 @@ public class Facade {
      *
      * @param id identificador da sessao do usuario solicitante.
      * @param amigo login do usuario a ser adicionado.
-     * @throws JackutException se o usuario nao existir, se a amizade ja existir,
-     * se o convite ja estiver pendente ou se o usuario tentar adicionar a si mesmo.
+     * @throws JackutException se houver violacao de regra de amizade.
      */
     public void adicionarAmigo(String id, String amigo) {
-        sistema.adicionarAmigo(id, amigo);
+        amizadeService.adicionarAmigo(id, amigo);
     }
 
     /**
@@ -99,7 +112,7 @@ public class Facade {
      * @throws JackutException se algum dos usuarios nao estiver cadastrado.
      */
     public boolean ehAmigo(String login, String amigo) {
-        return sistema.ehAmigo(login, amigo);
+        return amizadeService.ehAmigo(login, amigo);
     }
 
     /**
@@ -110,7 +123,7 @@ public class Facade {
      * @throws JackutException se o usuario nao estiver cadastrado.
      */
     public String getAmigos(String login) {
-        return sistema.getAmigos(login);
+        return amizadeService.getAmigos(login);
     }
 
     /**
@@ -119,11 +132,10 @@ public class Facade {
      * @param id identificador da sessao do remetente.
      * @param destinatario login do usuario destinatario.
      * @param recado texto do recado.
-     * @throws JackutException se o destinatario nao existir, se a sessao for invalida
-     * ou se o usuario tentar enviar recado para si mesmo.
+     * @throws JackutException se houver violacao de regra de recado.
      */
     public void enviarRecado(String id, String destinatario, String recado) {
-        sistema.enviarRecado(id, destinatario, recado);
+        recadoService.enviarRecado(id, destinatario, recado);
     }
 
     /**
@@ -131,16 +143,27 @@ public class Facade {
      *
      * @param id identificador da sessao.
      * @return texto do primeiro recado pendente.
-     * @throws JackutException se a sessao for invalida ou se nao houver recados.
+     * @throws JackutException se houver violacao de regra de recado.
      */
     public String lerRecado(String id) {
-        return sistema.lerRecado(id);
+        return recadoService.lerRecado(id);
     }
 
     /**
      * Salva os dados do sistema em arquivo.
      */
     public void encerrarSistema() {
-        sistema.encerrarSistema();
+        persistidor.salvar(dados);
+    }
+
+    /**
+     * Inicializa os servicos usados pela fachada.
+     */
+    private void inicializarServicos() {
+        this.usuarioService = new UsuarioService(dados);
+        this.sessaoService = new SessaoService(dados, usuarioService);
+        this.perfilService = new PerfilService(usuarioService, sessaoService);
+        this.amizadeService = new AmizadeService(usuarioService, sessaoService);
+        this.recadoService = new RecadoService(usuarioService, sessaoService);
     }
 }

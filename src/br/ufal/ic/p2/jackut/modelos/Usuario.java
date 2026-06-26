@@ -1,18 +1,21 @@
 package br.ufal.ic.p2.jackut.modelos;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import br.ufal.ic.p2.jackut.contratos.Identificavel;
+
 /**
  * Representa um usuario cadastrado no sistema Jackut.
  *
- * <p>O usuario armazena dados de autenticacao, atributos de perfil,
- * amigos efetivados, convites de amizade enviados e recados recebidos.</p>
+ * <p>O usuario armazena dados de autenticacao, atributos de perfil, amigos,
+ * convites de amizade enviados e recados recebidos.</p>
  */
-public class Usuario extends Entidade {
+public class Usuario implements Identificavel, Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -31,7 +34,6 @@ public class Usuario extends Entidade {
      * @param nome nome publico do usuario.
      */
     public Usuario(String login, String senha, String nome) {
-        super(login);
         this.login = login;
         this.senha = senha;
         this.perfil = new HashMap<String, String>();
@@ -39,6 +41,15 @@ public class Usuario extends Entidade {
         this.convitesEnviados = new ArrayList<String>();
         this.recados = new LinkedList<Recado>();
         this.perfil.put("nome", nome);
+    }
+
+    /**
+     * Retorna o identificador do usuario.
+     *
+     * @return login do usuario.
+     */
+    public String getId() {
+        return login;
     }
 
     /**

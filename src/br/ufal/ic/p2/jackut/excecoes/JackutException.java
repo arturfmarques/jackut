@@ -4,14 +4,10 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
 /**
- * Excecao personalizada do sistema Jackut.
+ * Excecao base do sistema Jackut.
  *
- * <p>E utilizada para representar erros de regra de negocio identificados
- * durante a execucao das funcionalidades do sistema.</p>
- *
- * <p>A mensagem e adaptada para a codificacao padrao da JVM para manter
- * compatibilidade com os scripts do EasyAccept, que podem ser lidos em
- * codificacoes diferentes dependendo do ambiente.</p>
+ * <p>As excecoes especificas do dominio herdam desta classe para manter
+ * mensagens semanticamente organizadas e compativeis com o EasyAccept.</p>
  */
 public class JackutException extends RuntimeException {
 
@@ -25,6 +21,16 @@ public class JackutException extends RuntimeException {
      */
     public JackutException(String mensagem) {
         super(ajustarMensagem(mensagem));
+    }
+
+    /**
+     * Cria uma excecao com mensagem e causa.
+     *
+     * @param mensagem mensagem descritiva do erro.
+     * @param causa causa original do erro.
+     */
+    public JackutException(String mensagem, Throwable causa) {
+        super(ajustarMensagem(mensagem), causa);
     }
 
     /**

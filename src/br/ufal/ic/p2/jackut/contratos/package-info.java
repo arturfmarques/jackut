@@ -1,6 +1,6 @@
 /**
  * Pacote de contratos do sistema Jackut.
  *
- * <p>Contem interfaces que definem comportamentos esperados por servicos do sistema.</p>
+ * <p>Contem interfaces que definem comportamentos comuns e contratos de servicos.</p>
  */
 package br.ufal.ic.p2.jackut.contratos;

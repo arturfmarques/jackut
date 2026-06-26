@@ -1,7 +1,7 @@
 /**
  * Pacote de servicos do sistema Jackut.
  *
- * <p>Contem as classes responsaveis pelas regras de negocio e pela persistencia
- * dos dados do sistema.</p>
+ * <p>Contem servicos coesos responsaveis por usuarios, sessoes, perfis,
+ * amizades, recados e persistencia.</p>
  */
 package br.ufal.ic.p2.jackut.servicos;

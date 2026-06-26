@@ -6,58 +6,49 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import br.ufal.ic.p2.jackut.contratos.Persistidor;
+import br.ufal.ic.p2.jackut.dados.DadosJackut;
+import br.ufal.ic.p2.jackut.excecoes.ErroPersistenciaException;
 import br.ufal.ic.p2.jackut.modelos.Usuario;
 
 /**
  * Servico responsavel pela persistencia dos dados do Jackut em arquivo.
- *
- * <p>A classe implementa o contrato {@link Persistidor}, permitindo salvar,
- * carregar e limpar os usuarios cadastrados no sistema.</p>
  */
 public class ServicoPersistencia implements Persistidor {
 
     private static final String NOME_ARQUIVO = "dados-jackut.ser";
 
     /**
-     * Salva o mapa de usuarios em arquivo.
+     * Salva os dados do sistema em arquivo.
      *
-     * @param usuarios mapa de usuarios indexados pelo login.
-     * @throws RuntimeException se ocorrer erro durante a gravacao do arquivo.
+     * @param dados dados que serao salvos.
+     * @throws ErroPersistenciaException se ocorrer falha durante a gravacao.
      */
-    public void salvar(Map<String, Usuario> usuarios) {
+    public void salvar(DadosJackut dados) {
         ObjectOutputStream saida = null;
 
         try {
             saida = new ObjectOutputStream(new FileOutputStream(NOME_ARQUIVO));
-            saida.writeObject(usuarios);
+            saida.writeObject(dados);
         } catch (IOException erro) {
-            throw new RuntimeException("Erro ao salvar os dados do sistema.", erro);
+            throw new ErroPersistenciaException("Erro ao salvar os dados do sistema.", erro);
         } finally {
-            if (saida != null) {
-                try {
-                    saida.close();
-                } catch (IOException erro) {
-                    throw new RuntimeException("Erro ao fechar o arquivo de dados.", erro);
-                }
-            }
+            fecharSaida(saida);
         }
     }
 
     /**
-     * Carrega o mapa de usuarios salvo anteriormente.
+     * Carrega os dados salvos anteriormente.
      *
-     * @return mapa de usuarios carregado ou mapa vazio caso nao exista arquivo valido.
-     * @throws RuntimeException se ocorrer erro ao fechar o arquivo de dados.
+     * @return dados carregados ou dados vazios caso nao exista arquivo valido.
      */
-    public Map<String, Usuario> carregar() {
+    public DadosJackut carregar() {
         File arquivo = new File(NOME_ARQUIVO);
 
         if (!arquivo.exists()) {
-            return new LinkedHashMap<String, Usuario>();
+            return new DadosJackut();
         }
 
         ObjectInputStream entrada = null;
@@ -65,19 +56,13 @@ public class ServicoPersistencia implements Persistidor {
         try {
             entrada = new ObjectInputStream(new FileInputStream(arquivo));
             Object objeto = entrada.readObject();
-            return converterParaMapa(objeto);
+            return converterObjeto(objeto);
         } catch (IOException erro) {
-            return new LinkedHashMap<String, Usuario>();
+            return new DadosJackut();
         } catch (ClassNotFoundException erro) {
-            return new LinkedHashMap<String, Usuario>();
+            return new DadosJackut();
         } finally {
-            if (entrada != null) {
-                try {
-                    entrada.close();
-                } catch (IOException erro) {
-                    throw new RuntimeException("Erro ao fechar o arquivo de dados.", erro);
-                }
-            }
+            fecharEntrada(entrada);
         }
     }
 
@@ -93,26 +78,65 @@ public class ServicoPersistencia implements Persistidor {
     }
 
     /**
-     * Converte um objeto carregado do arquivo para um mapa de usuarios valido.
+     * Converte o objeto carregado para o formato atual de dados.
      *
      * @param objeto objeto carregado do arquivo.
-     * @return mapa de usuarios extraido do objeto.
+     * @return dados convertidos.
      */
-    private Map<String, Usuario> converterParaMapa(Object objeto) {
-        Map<String, Usuario> usuarios = new LinkedHashMap<String, Usuario>();
+    private DadosJackut converterObjeto(Object objeto) {
+        if (objeto instanceof DadosJackut) {
+            DadosJackut dados = (DadosJackut) objeto;
+            dados.reiniciarSessoes();
+            return dados;
+        }
 
         if (objeto instanceof Map<?, ?>) {
+            DadosJackut dados = new DadosJackut();
             Map<?, ?> mapa = (Map<?, ?>) objeto;
 
             for (Object chave : mapa.keySet()) {
                 Object valor = mapa.get(chave);
 
                 if (chave instanceof String && valor instanceof Usuario) {
-                    usuarios.put((String) chave, (Usuario) valor);
+                    dados.getUsuarios().put((String) chave, (Usuario) valor);
                 }
             }
+
+            return dados;
         }
 
-        return usuarios;
+        return new DadosJackut();
+    }
+
+    /**
+     * Fecha o fluxo de saida usado na gravacao.
+     *
+     * @param saida fluxo de saida.
+     * @throws ErroPersistenciaException se ocorrer erro ao fechar o arquivo.
+     */
+    private void fecharSaida(ObjectOutputStream saida) {
+        if (saida != null) {
+            try {
+                saida.close();
+            } catch (IOException erro) {
+                throw new ErroPersistenciaException("Erro ao fechar o arquivo de dados.", erro);
+            }
+        }
+    }
+
+    /**
+     * Fecha o fluxo de entrada usado na leitura.
+     *
+     * @param entrada fluxo de entrada.
+     * @throws ErroPersistenciaException se ocorrer erro ao fechar o arquivo.
+     */
+    private void fecharEntrada(ObjectInputStream entrada) {
+        if (entrada != null) {
+            try {
+                entrada.close();
+            } catch (IOException erro) {
+                throw new ErroPersistenciaException("Erro ao fechar o arquivo de dados.", erro);
+            }
+        }
     }
 }
