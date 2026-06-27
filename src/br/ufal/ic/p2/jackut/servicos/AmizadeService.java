@@ -14,16 +14,20 @@ public class AmizadeService {
 
     private UsuarioService usuarioService;
     private SessaoService sessaoService;
+    private BloqueioRelacionamentoService bloqueioService;
 
     /**
      * Cria o servico de amizades.
      *
      * @param usuarioService servico de usuarios.
      * @param sessaoService servico de sessoes.
+     * @param bloqueioService servico de bloqueios por inimizade.
      */
-    public AmizadeService(UsuarioService usuarioService, SessaoService sessaoService) {
+    public AmizadeService(UsuarioService usuarioService, SessaoService sessaoService,
+                          BloqueioRelacionamentoService bloqueioService) {
         this.usuarioService = usuarioService;
         this.sessaoService = sessaoService;
+        this.bloqueioService = bloqueioService;
     }
 
     /**
@@ -40,6 +44,8 @@ public class AmizadeService {
         Usuario usuario = sessaoService.buscarUsuarioDaSessao(id);
         Usuario usuarioAmigo = usuarioService.buscarUsuario(amigo);
         String login = usuario.getLogin();
+
+        bloqueioService.validarBloqueioPorInimizade(usuario, usuarioAmigo);
 
         if (login.equals(amigo)) {
             throw new UsuarioNaoPodeAdicionarASiMesmoException();
