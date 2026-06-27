@@ -4,14 +4,12 @@ import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import br.ufal.ic.p2.jackut.modelos.Comunidade;
 import br.ufal.ic.p2.jackut.modelos.Sessao;
 import br.ufal.ic.p2.jackut.modelos.Usuario;
 
 /**
  * Representa o estado central do sistema Jackut.
- *
- * <p>A classe guarda os dados compartilhados pelos servicos, evitando que uma
- * classe de regra de negocio concentre todos os mapas e contadores do sistema.</p>
  */
 public class DadosJackut implements Serializable {
 
@@ -19,6 +17,7 @@ public class DadosJackut implements Serializable {
 
     private Map<String, Usuario> usuarios;
     private Map<String, Sessao> sessoes;
+    private Map<String, Comunidade> comunidades;
     private int proximoIdSessao;
 
     /**
@@ -27,6 +26,7 @@ public class DadosJackut implements Serializable {
     public DadosJackut() {
         this.usuarios = new LinkedHashMap<String, Usuario>();
         this.sessoes = new LinkedHashMap<String, Sessao>();
+        this.comunidades = new LinkedHashMap<String, Comunidade>();
         this.proximoIdSessao = 1;
     }
 
@@ -46,6 +46,19 @@ public class DadosJackut implements Serializable {
      */
     public Map<String, Sessao> getSessoes() {
         return sessoes;
+    }
+
+    /**
+     * Retorna o mapa de comunidades cadastradas.
+     *
+     * @return mapa de comunidades indexadas pelo nome.
+     */
+    public Map<String, Comunidade> getComunidades() {
+        if (comunidades == null) {
+            comunidades = new LinkedHashMap<String, Comunidade>();
+        }
+
+        return comunidades;
     }
 
     /**
@@ -73,5 +86,6 @@ public class DadosJackut implements Serializable {
     public void limpar() {
         usuarios.clear();
         reiniciarSessoes();
+        getComunidades().clear();
     }
 }

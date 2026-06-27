@@ -20,7 +20,7 @@ public class JackutException extends RuntimeException {
      * @param mensagem mensagem descritiva do erro.
      */
     public JackutException(String mensagem) {
-        super(ajustarMensagem(mensagem));
+        super(ajustarTexto(mensagem));
     }
 
     /**
@@ -30,7 +30,7 @@ public class JackutException extends RuntimeException {
      * @param causa causa original do erro.
      */
     public JackutException(String mensagem, Throwable causa) {
-        super(ajustarMensagem(mensagem), causa);
+        super(ajustarTexto(mensagem), causa);
     }
 
     /**
@@ -39,7 +39,7 @@ public class JackutException extends RuntimeException {
      * @param mensagem mensagem original do contrato dos testes.
      * @return mensagem ajustada para comparacao pelo EasyAccept.
      */
-    private static String ajustarMensagem(String mensagem) {
+    public static String ajustarTexto(String mensagem) {
         if (mensagem == null) {
             return null;
         }

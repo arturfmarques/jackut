@@ -13,16 +13,20 @@ public class RecadoService {
 
     private UsuarioService usuarioService;
     private SessaoService sessaoService;
+    private BloqueioRelacionamentoService bloqueioService;
 
     /**
      * Cria o servico de recados.
      *
      * @param usuarioService servico de usuarios.
      * @param sessaoService servico de sessoes.
+     * @param bloqueioService servico de bloqueios por inimizade.
      */
-    public RecadoService(UsuarioService usuarioService, SessaoService sessaoService) {
+    public RecadoService(UsuarioService usuarioService, SessaoService sessaoService,
+                         BloqueioRelacionamentoService bloqueioService) {
         this.usuarioService = usuarioService;
         this.sessaoService = sessaoService;
+        this.bloqueioService = bloqueioService;
     }
 
     /**
@@ -37,6 +41,8 @@ public class RecadoService {
     public void enviarRecado(String id, String destinatario, String recado) {
         Usuario remetente = sessaoService.buscarUsuarioDaSessao(id);
         Usuario usuarioDestinatario = usuarioService.buscarUsuario(destinatario);
+
+        bloqueioService.validarBloqueioPorInimizade(remetente, usuarioDestinatario);
 
         if (remetente.getLogin().equals(destinatario)) {
             throw new UsuarioNaoPodeEnviarRecadoParaSiMesmoException();

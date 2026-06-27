@@ -4,12 +4,6 @@ import java.io.File;
 
 /**
  * Classe principal responsavel por executar os testes de aceitacao do projeto Jackut.
- *
- * <p>A classe utiliza a biblioteca EasyAccept para executar os arquivos de teste
- * disponibilizados para o Milestone 01.</p>
- *
- * <p>A localizacao da pasta de testes e feita de forma flexivel para evitar
- * falhas quando o projeto e executado a partir de diretorios diferentes.</p>
  */
 public class Main {
 
@@ -34,6 +28,21 @@ public class Main {
 
         executarTeste(baseTestes + "us4_1.txt");
         executarTeste(baseTestes + "us4_2.txt");
+
+        executarTeste(baseTestes + "us5_1.txt");
+        executarTeste(baseTestes + "us5_2.txt");
+
+        executarTeste(baseTestes + "us6_1.txt");
+        executarTeste(baseTestes + "us6_2.txt");
+
+        executarTeste(baseTestes + "us7_1.txt");
+        executarTeste(baseTestes + "us7_2.txt");
+
+        executarTeste(baseTestes + "us8_1.txt");
+        executarTeste(baseTestes + "us8_2.txt");
+
+        executarTeste(baseTestes + "us9_1.txt");
+        executarTeste(baseTestes + "us9_2.txt");
     }
 
     /**
